@@ -51,42 +51,44 @@ def manage_torrent_cb(update: Update, context: CallbackContext):
 
 @u.check_permissions(required_permission=Permissions.READ)
 @u.failwithmessage
-def see_trackers_cb(update: Update, context: CallbackContext):
-    logger.info('trackers inline button')
+def move_to_films_cb(update: Update, context: CallbackContext):
+    logger.info('move to films inline button')
 
     torrent_hash = context.match[1]
     logger.info('torrent hash: %s', torrent_hash)
 
+    qb.set_torrent_location(torrent_hash,'/downloads/films')
+
     torrent = qb.torrent(torrent_hash)
-    trackers = torrent.trackers()
-
-    strings_list = [
-        '<b>{status}:</b> {url} <b>({num_peers} peers)</b>'.format(**{k: u.html_escape(str(v)) for k, v in tracker.items()})
-        for tracker in trackers]
-    text = '\n'.join(strings_list)
-
-    if len(text) > MAX_MESSAGE_LENGTH:
-        trackers_info = dict()
-        for tracker in trackers:
-            tracker_status = tracker['status']
-            if not trackers_info.get(tracker_status, None):
-                trackers_info[tracker_status] = dict(count=0, num_peers=0)
-
-            trackers_info[tracker_status]['count'] += 1
-            trackers_info[tracker_status]['num_peers'] += tracker['num_peers']
-
-        lines_list = list()
-        for status, status_counts in trackers_info.items():
-            lines_list.append(f"<b>{status}</b>: {status_counts['count']} trackers, {status_counts['num_peers']} peers")
-
-        text = '\n'.join(lines_list)
-
     update.callback_query.edit_message_text(
-        text or 'No trackers',
-        reply_markup=torrent.actions_keyboard,
-        parse_mode=ParseMode.HTML
-    )
-    update.callback_query.answer('Trackers list')
+            torrent.string(),
+            reply_markup=torrent.actions_keyboard,
+            parse_mode=ParseMode.HTML
+        )
+
+
+    update.callback_query.answer('Moved to films')  
+
+@u.check_permissions(required_permission=Permissions.READ)
+@u.failwithmessage
+def move_to_serials_cb(update: Update, context: CallbackContext):
+    logger.info('move to serials inline button')
+
+    torrent_hash = context.match[1]
+    logger.info('torrent hash: %s', torrent_hash)
+
+
+    qb.set_torrent_location(torrent_hash,'/downloads/serials')
+
+
+    torrent = qb.torrent(torrent_hash)
+    update.callback_query.edit_message_text(
+            torrent.string(),
+            reply_markup=torrent.actions_keyboard,
+            parse_mode=ParseMode.HTML
+        )
+
+    update.callback_query.answer('Moved to serails')    
 
 
 @u.check_permissions(required_permission=Permissions.READ)
@@ -301,7 +303,8 @@ def reduce_buttons(update: Update, context: CallbackContext):
 
 updater.add_handler(MessageHandler(Filters.regex(r'^\/start info(.*)$'), on_info_deeplink))
 updater.add_handler(CallbackQueryHandler(manage_torrent_cb, pattern=r'^manage:(.*)$'))
-updater.add_handler(CallbackQueryHandler(see_trackers_cb, pattern=r'^trackers:(.*)$'))
+updater.add_handler(CallbackQueryHandler(move_to_films_cb, pattern=r'^movetofilms:(.*)$'))
+updater.add_handler(CallbackQueryHandler(move_to_serials_cb, pattern=r'^movetoserials:(.*)$'))
 updater.add_handler(CallbackQueryHandler(refresh_torrent_cb, pattern=r'^refresh:(.*)$'))
 updater.add_handler(CallbackQueryHandler(pause_torrent_cb, pattern=r'^pause:(.*)$'))
 updater.add_handler(CallbackQueryHandler(resume_torrent_cb, pattern=r'^resume:(.*)$'))

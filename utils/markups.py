@@ -102,22 +102,23 @@ def sort_markup(qbfilter, exclude_key='', row_width=2):
 def actions_markup(torrent_hash):
     keyboard = [
         [
-            InlineKeyboardButton('resume', callback_data='resume:{}'.format(torrent_hash)),
-            InlineKeyboardButton('pause', callback_data='pause:{}'.format(torrent_hash)),
-            InlineKeyboardButton('refresh', callback_data='refresh:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Resume', callback_data='resume:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Pause', callback_data='pause:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Refresh', callback_data='refresh:{}'.format(torrent_hash)),
+        ],
+        #[
+        #    InlineKeyboardButton('Force start', callback_data='forcestart:{}'.format(torrent_hash)),
+        #    InlineKeyboardButton('Reforce start', callback_data='unforcestart:{}'.format(torrent_hash)),
+        #],
+        [
+            #InlineKeyboardButton('atm on/off', callback_data='toggleatm:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Serials', callback_data='movetoserials:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Films', callback_data='movetofilms:{}'.format(torrent_hash))
         ],
         [
-            InlineKeyboardButton('force start', callback_data='forcestart:{}'.format(torrent_hash)),
-            InlineKeyboardButton('un-force start', callback_data='unforcestart:{}'.format(torrent_hash)),
-        ],
-        [
-            InlineKeyboardButton('atm on/off', callback_data='toggleatm:{}'.format(torrent_hash)),
-            InlineKeyboardButton('see trackers', callback_data='trackers:{}'.format(torrent_hash))
-        ],
-        [
-            InlineKeyboardButton('delete', callback_data='deletewithfiles:{}'.format(torrent_hash)),
-            InlineKeyboardButton('force recheck', callback_data='recheck:{}'.format(torrent_hash)),
-            InlineKeyboardButton('reduce buttons', callback_data='reduce:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Delete', callback_data='deletewithfiles:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Recheck', callback_data='recheck:{}'.format(torrent_hash)),
+            InlineKeyboardButton('Hide', callback_data='reduce:{}'.format(torrent_hash)),
         ]
     ]
 

@@ -89,7 +89,8 @@ TORRENT_STRING = """<code>{name_escaped}</code>
   <b>force start</b>: {force_start_pretty}
   <b>tags</b>: <code>{tags}</code>
   <b>auto torrent management</b>: {auto_tmm_string}
-  
+  <b>path</b>: {save_path}
+
   <code>infohash:{hash}</code>
   [<a href="{info_deeplink}">info</a>]"""
 
@@ -140,6 +141,7 @@ class Torrent:
             )
 
         self._torrent_dict['short_name'] = self._torrent_dict['name']
+        self._torrent_dict['save_path'] = self._torrent_dict['save_path']
         if len(self._torrent_dict['name']) > 51:
             self._torrent_dict['short_name'] = self._torrent_dict['name'][:51].strip() + '...'
         self._torrent_dict['short_name_escaped'] = u.html_escape(self._torrent_dict['short_name'])

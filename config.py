@@ -18,7 +18,7 @@ def exit_with_message(message: str):
     sys.exit(0)
 
 
-example_config = toml.load('config.example.toml')
+example_config = toml.load('config.toml')
 
 for config_section, example_config_section_dict in example_config.items():
     if config_section not in config:
